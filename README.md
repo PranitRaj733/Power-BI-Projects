@@ -1,9 +1,9 @@
 # Power-BI-Projects
 
-Project 1 - Commonwealth Games Visualization
+**Project 1 - Commonwealth Games Visualization**
 Description - It shows total streams as a KPI card, artist type split by genre in a donut, artists by country of origin and streams by debut year in a line chart. Slicers filter by gender and primary language.
 
-Tech Stack - 
+**Tech Stack** - 
 **For the visual**: Donut chart showing artist type split by genre count.
 Clustered bar chart showing artists by country of origin.
 Line chart showing streams by debut year.
