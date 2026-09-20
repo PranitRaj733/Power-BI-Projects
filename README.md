@@ -28,4 +28,20 @@ Geographic performance: Which countries sell the most units and generate the mos
 Seasonality: Month-by-month sales patterns.
 Discount impact: The Discount Band slicer lets you check how discounting affects every metric on the page.
 
-**Summary** - The project is a well-structured, beginner-to-intermediate Power BI report that shows the basics of data import, type cleaning, KPI cards, multi-dimensional breakdowns and slicer filtering. Adding DAX measures for profit margin and discount %, using better chart types and cleaning up the naming would make it more portfolio-ready.
+**Summary** - The project is a well-structured, beginner-to-intermediate Power BI report that shows the basics of data import, type cleaning, KPI cards, multi-dimensional breakdowns and slicer filtering. Adding DAX measures for profit margin and discount % using better chart types and cleaning up the naming would make it more portfolio-ready.
+
+**Project 3 - Student Academic Performance Analysis Dashboard**
+
+**Description** - Single-page Power BI dashboard analyzing how study habits, attendance, sleep, parental education and internet access relate to student academic performance. Uses KPI cards, donut, bar and line charts and an Internet Access slicer to explore a 12-column student dataset.
+
+**Power Query Transformations**
+- Loaded the CSV with Csv.Document and promoted the first row to headers
+- Set data types: whole number for student_id, decimal for study time, attendance, sleep hours, previous grade and exam score, and text for the categorical fields.
+- No custom columns, merges or filtering.
+
+**Key Insights (What the Dashboard Answers)**
+- How students are distributed across final grades
+- Whether parental education level relates to attendance
+- How sleep patterns differ between genders
+- How study time is spread across the student group
+- Whether internet access changes any of the patterns above.
