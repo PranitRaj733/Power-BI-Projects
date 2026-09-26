@@ -45,3 +45,69 @@ Discount impact: The Discount Band slicer lets you check how discounting affects
 - How sleep patterns differ between genders
 - How study time is spread across the student group
 - Whether internet access changes any of the patterns above.
+
+- **Project 4 - Retail Sales Dashboard for Analysis**
+- **Description Summary**
+This is a two-page Power BI report built on a single flat fact table — `E‑commerce_Delivery_Shipping_Data_2026` — containing 50,000 order-level records across 2026 (Jan–Dec), spanning 17 countries, 10 warehouse cities, 12 product categories, 8 carriers and 5 shipping methods. The report is a logistics/delivery-performance analytics dashboard layered on top of an e-commerce order dataset: it blends order economics (order value, shipping cost, cost-to-serve) with fulfilment performance (delivery variance, delays, returns, customer rating).
+
+**Core Tech Stack**
+The build shows solid fundamentals — Power Query ingestion, DAX calculated columns, DAX measures with dependency chaining (`Unique_Cust → Returned_Orders → Return Rate`) and a two-page layout that separates "order status/economics" from "delivery pattern/quality". It also has some rough edges typical of a first strong portfolio piece (an empty calculated column, one broken measure, some implicit vs. explicit measure inconsistency and a default un-customized theme)
+**Data Source & Model**
+Item - Detail
+Source- CSV (`E-commerce_Delivery_Shipping_Data_2026.csv`), loaded via Power Query
+Grain	- One row = one order
+Row count - 	50,000
+Native column - 30
+Model tables - 1 fact table + 2 auto-generated Power BI date hierarchy tables
+Date range - 2026‑01‑01 to 2026‑12‑31
+
+**Data Preparation (Power Query / ETL)**
+The M query applied:
+1.Load CSV with explicit delimiter/encoding settings.
+2.Promote headers.
+3.Explicitly type all 29 native columns (text, date, number, Int64 — not left as "Any").
+4.Add one custom column in Power Query itself: `Delivery Variance = actual_delivery_days − promised_delivery_days`.
+
+**Calculated Columns (Power Query + DAX)**
+Power Query (M) — 1 column
+`Delivery Variance` = `[actual_delivery_days] - [promised_delivery_days]` → used in report ✅ (feeds `Delivery Variance Category`)
+
+**DAX calculated columns on the fact table — 8 columns**
+Delivery Variance Category` = `IF([Delivery Variance] <= 0, "Arrival Before ETA", "Delayed Delivery") → used in visuals ✅
+Cost-To-Serve = shipping_cost_usd / order_value_usd → used in visuals ✅
+Shipment_Flagging = IF(shipping_cost_usd > order_value_usd, "Uneconomic Orders", "Economic Orders") → used in visuals ✅
+Shipping_Flag = IF(shipping_cost_usd > order_value_usd, "Shipping Loss", "Profit Shipment") → used in visuals ✅
+Order_Value Density =DIVIDE(order_value_usd, product_weight_kg) → not placed directly on canvas, but feeds the Median_Density measure.
+Order_Year = `YEAR(order_date)
+Order_Month = MONTH(order_date)
+
+**DAX Measures Incorporated**
+Average_Product Weight = AVERAGE(product_weight_kg)
+Avg Distance = AVERAGE(distance_km)
+Median_Density = AVERAGE(Order_Value Density)
+Unique_Cust = DISTINCTCOUNT(order_id)
+Average_Cust Rating = AVERAGE(customer_rating)
+Returned_Orders = CALCULATE([Unique_Cust], return_requested = "Yes")
+Return Rate = DIVIDE([Returned_Orders], [Unique_Cust]) * 100 → used ✅ (KPI card + table, Page 2)
+Total_Shipping Cost = SUM(shipping_cost_usd)
+Average Delivery_Delay = AVERAGE(delivery_delay_days)
+Avg Promised_Delivery TAT = AVERAGE(promised_delivery_days)
+
+**Key Business Insights Findable in the Data**
+
+**1.Late deliveries are the norm, not the exception:** ~56% of all orders are flagged as late — a headline KPI worth surfacing more prominently (currently there's no single "on-time %" card).
+**2.Shipping economics are inverted for over half of all orders:** ~51.7% of shipments cost more to ship than the order is worth (Shipping_Flag = "Shipping Loss") and the average Cost-to-Serve ratio is ~3.1x (shipping cost is, on average, over 3x the order value). This is the single most striking number in the dataset and is currently under-surfaced (it only appears split across a pie chart and a column chart, with no headline KPI card).
+**3.Return Rate-** sits around 17%, with Product Defect, Damaged Package, and "Not as Described" as the top reasons — an unexploited dimension (see gap analysis above).
+**4.Average customer rating-** is 3.37 / 5 — middling, consistent with the delay/return patterns above.
+**5**.12 product categories, 8 carriers, 5 shipping methods, and 4 delivery-status states give enough categorical richness to support the matrix/decomposition additions recommended above.
+
+**Add 1–2 exported screenshots of each page (File → Export → Export to Image/PDF in Power BI Desktop) so the README renders visually on GitHub without requiring a Power BI license to view.**
+
+
+
+
+
+
+
+
+
