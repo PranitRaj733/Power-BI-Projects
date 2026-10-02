@@ -46,8 +46,9 @@ Discount impact: The Discount Band slicer lets you check how discounting affects
 - How study time is spread across the student group
 - Whether internet access changes any of the patterns above.
 
-- **Project 4 - Retail Sales Dashboard for Analysis**
-- **Description Summary**
+
+**Project 4 - Retail Sales Dashboard for Analysis**
+**Description Summary**
 This is a two-page Power BI report built on a single flat fact table — `E‑commerce_Delivery_Shipping_Data_2026` — containing 50,000 order-level records across 2026 (Jan–Dec), spanning 17 countries, 10 warehouse cities, 12 product categories, 8 carriers and 5 shipping methods. The report is a logistics/delivery-performance analytics dashboard layered on top of an e-commerce order dataset: it blends order economics (order value, shipping cost, cost-to-serve) with fulfilment performance (delivery variance, delays, returns, customer rating).
 
 **Core Tech Stack**
@@ -103,6 +104,59 @@ Avg Promised_Delivery TAT = AVERAGE(promised_delivery_days)
 
 **Add 1–2 exported screenshots of each page (File → Export → Export to Image/PDF in Power BI Desktop) so the README renders visually on GitHub without requiring a Power BI license to view.**
 
+
+**Project 5 - Beverage Dashboard Analytics — Coffee Quality & Price Benchmark**
+**Description - An interactive Power BI dashboard that models a multi-table coffee-lot benchmark dataset to explain what actually drives coffee quality, price and where the underlying data can and cannot be trusted.
+
+**Introduction** - Global coffee buyers, roasters and quality-control teams routinely make sourcing and pricing decisions off spreadsheets that mix duplicate records, incomplete sensor readings and loosely related quality metrics — this dashboard was built to show how a properly modeled, relationship-driven Power BI report turns that same raw data into a defensible, decision-ready view of quality, price and data reliability.
+
+**Project Status**
+This documents the current build: a single, densely-instrumented report page, **"Price & Target Analysis,"** containing 17 visuals (KPI cards, cards, a scatter chart, clustered bar charts, a donut chart, a column chart, a year slicer and a bookmark-driven navigation button). It is the analytical core of a planned five-page dashboard; remaining pages (Data Quality Overview, Farm & Environment Drivers, Sensory Profile and a Feature Dictionary reference page) are scoped and in progress. Framing the README around what is actually built, rather than the full roadmap is intentional — a reviewer should never have to guess what's real versus planned.
+
+**Tech-Stack**
+**Power BI Desktop** — primary authoring tool for data modeling, DAX, and report design
+**Power Query (M)** — data ingestion, cleaning, type correction, conditional-column logic and table merges from four source CSV files
+**DAX (Data Analysis Expressions)** — custom measures for KPIs, percentages, train/test benchmarking and dynamic targets (e.g., training-set average/median used as live goal lines)
+**Star-schema-style data modeling** — a Dim_Lots dimension table related 1-to-many to a Fact_CoffeeBenchmark fact table on lot_id, with a record_type attribute merged in (not modeled as a redundant relationship) to track duplicate/revision records at source
+**Power BI KPI visual with dynamic targets** — quality and price benchmarks calculated from the training split of the data rather than hardcoded constants
+**Power BI bookmarks & navigation (action buttons)** — in-report navigation groundwork for the multi-page rollout
+**CSV** — raw source files, version-controlled independently of the .pbix
+
+**What's on the "Price & Target Analysis" Page**
+**KPI visuals:** Average Quality Score vs. a data-derived Quality Target; Average Price vs. a data-derived Price Target — both benchmarked against the training split rather than an arbitrary fixed number.
+**Scatter chart:** Quality Score vs. Price per Kg, colored by quality grade, sized by lot size — surfaces that quality alone is a weak price predictor.
+**Clustered bar chart:** Total Records by country of origin.
+**Clustered bar chart:** Sensory profile comparison (acidity, sweetness, body, aroma, flavor) — Arabica vs. Robusta.
+**Column chart:** Average Quality Score by country of origin.
+**Donut chart:** Quality grade distribution across the portfolio.
+**Cards:** Total Unique Lots, Average Quality by Altitude Band, Average Altitude and supporting summary metrics.
+**Slicer:** Harvest calendar year, for trend-level filtering.
+**Navigation button:** A bookmark-linked "Back" control, laying the interaction pattern for the multi-page version.
+
+**How This Dashboard Helps in Core Business Scenarios**
+
+**Sourcing decisions:** Buyers can immediately see whether a country or altitude band is delivering quality consistent with its price point instead of relying on anecdotal supplier reputation.
+**Pricing strategy validation:** The quality-vs-price scatter chart exposes that grade alone explains only part of price variation, prompting a review of what else (e.g., buyer segment, certification) should factor into pricing models — a direct input into commercial strategy discussions.
+**Target-setting with real benchmarks:** Because the Quality and Price targets are calculated from the training-split average/median rather than hardcoded, the KPI visuals stay valid as new harvest data arrives — no manual re-baselining required each season.
+**Risk flagging on data reliability:** Surfacing duplicate/revision records and incomplete fields up front means downstream averages and forecasts aren't silently skewed by data-entry noise — a control most dashboards skip entirely.
+**Cross-functional alignment:** A single page serves procurement (country/altitude view), quality control (sensory and grade breakdown) and finance (price benchmarking) without needing three separate reports.
+**Scalable governance:** The relationship model (lot-level dimension to record-level fact, with duplicate/revision tracking) mirrors how real commodity-trading and QA systems are structured, so the same pattern extends cleanly as more harvest years or origins are added.
+
+
+**Why This Project Reflects Senior-Analyst-Level Work**
+Modeled data at the correct grain instead of flattening everything into one table — a deliberate one-to-many relationship, not a default Power BI import
+Replaced arbitrary target values with targets calculated directly from the training split showing an understanding of how benchmarks should behave in an evolving dataset
+Investigated and explicitly handled data-quality issues (duplicate/revision records, missing environmental readings) rather than letting them quietly distort KPIs
+Chose statistically appropriate aggregations (e.g., median over mean for a right-skewed price field) rather than defaulting to averages everywhere
+Built the report with a navigation pattern intended for a multi-page rollout showing planning beyond a single static screen
+
+
+**Roadmap**
+
+**Data Quality Overview page** — record-type breakdown, null-rate audit, train/test balance check.
+**Farm & Environment Drivers page** — altitude, processing method, defect rate, and farm-type analysis.
+**Sensory Profile page** — Full five-attribute sensory breakdown by species and quality grade.
+**Feature Dictionary reference page** — intentionally disconnected documentation table explaining column semantics and prediction-timing risk (pre-harvest vs. outcome-stage features)
 
 
 
